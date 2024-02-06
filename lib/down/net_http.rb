@@ -8,6 +8,7 @@ require "down/backend"
 
 require "tempfile"
 require "fileutils"
+require "socksify/http"
 
 module Down
   # Provides streaming downloads implemented with Net::HTTP and open-uri.
@@ -245,6 +246,8 @@ module Down
       if options[:proxy]
         proxy = URI(options[:proxy])
         http_class = Net::HTTP::Proxy(proxy.hostname, proxy.port, proxy.user, proxy.password)
+      elsif options[:socks_proxyaddr] && options[:socks_proxyport]
+        http_class = Net::HTTP::SOCKSProxy(options[:socks_proxyaddr], options[:socks_proxyport])
       end
 
       http = http_class.new(uri.host, uri.port)
