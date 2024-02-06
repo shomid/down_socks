@@ -92,6 +92,8 @@ module Down
         uri.password = nil
       end
 
+      open_uri_options.delete(:socks_proxyaddr)
+      open_uri_options.delete(:socks_proxyport)    
       open_uri_file = open_uri(uri, open_uri_options, follows_remaining: max_redirects)
 
       # Handle the fact that open-uri returns StringIOs for small files.
